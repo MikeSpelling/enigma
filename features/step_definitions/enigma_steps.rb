@@ -3,5 +3,5 @@ Given /^an enigma$/ do
 end
 
 Then /^enigma should encode "([^"]*)" as "([^"]*)"$/ do |input, expected_output|
-  @enigma.cipher(input).should == expected_output
+  assert_equal @enigma.cipher(input), expected_output
 end

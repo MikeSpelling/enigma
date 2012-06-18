@@ -13,20 +13,20 @@ Then /^rotor "([^"]*)" should have a notch at "([^"]*)"$/ do |rotor_number, expe
   actual = @rotors[rotor_number].notch
 
   if expected_notch == "nil"
-    actual.should == nil
+    assert_equal actual, nil
   else
-    actual.to_s.should == expected_notch
+    assert_equal actual.to_s, expected_notch
   end
 end
 
 Then /^rotor "([^"]*)" should "([^"]*)" "([^"]*)" to "([^"]*)"$/ do |rotor_number, direction, input, expected_output|
   if direction == "cipher"
-    @rotors[rotor_number].cipher(input.to_i).should == expected_output.to_i
+    assert_equal @rotors[rotor_number].cipher(input.to_i), expected_output.to_i
   elsif direction == "decipher"
-    @rotors[rotor_number].decipher(input.to_i).should == expected_output.to_i
+    assert_equal @rotors[rotor_number].decipher(input.to_i), expected_output.to_i
   end
 end
 
 Then /^the reflector should map "([^"]*)" to "([^"]*)"$/ do |input, expected_output|
-  @reflector.cipher(input.to_i).should == expected_output.to_i
+  assert_equal @reflector.cipher(input.to_i), expected_output.to_i
 end
