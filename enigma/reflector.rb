@@ -1,4 +1,5 @@
 class Reflector
+
   def initialize(mapper)
     @mapper = mapper
   end

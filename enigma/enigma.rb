@@ -1,4 +1,5 @@
 class Enigma
+
   def initialize(rotor1, rotor2, rotor3, reflector)
     @rotor1 = rotor1
     @rotor2 = rotor2
@@ -8,9 +9,9 @@ class Enigma
 
   def get(index, direction)
     if (direction == :forwards)
-      @rotor1.get(@rotor2.get(@rotor3.get(index, direction), direction), direction)
+      @rotor1.map(@rotor2.map(@rotor3.map(index, direction), direction), direction)
     elsif (direction == :backwards)
-      @rotor3.get(@rotor2.get(@rotor1.get(index, direction), direction), direction)
+      @rotor3.map(@rotor2.map(@rotor1.map(index, direction), direction), direction)
     end
   end
 
@@ -36,7 +37,5 @@ class Enigma
     end
     ciphered_string
   end
+
 end
-
-
-
