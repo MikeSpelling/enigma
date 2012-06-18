@@ -1,22 +1,12 @@
 Given /^there are 3 preset rotors$/ do
-  right3 = [
-      "B", "D", "F", "H", "J", "L", "C", "P", "R", "T", "X", "V", "Z",
-      "N", "Y", "E", "I", "W", "G", "A", "K", "M", "U", "S", "Q", "O"
-  ]
-  rotor3 = Rotor.new(right3, "V", "K")
-
-  right2 = [
-      "A", "J", "D", "K", "S", "I", "R", "U", "X", "B", "L", "H", "W",
-      "T", "M", "C", "Q", "G", "Z", "N", "P", "Y", "F", "V", "O", "E"
-  ]
-  rotor2 = Rotor.new(right2, "E", "C")
-
-  right1 = [
-      "E", "K", "M", "F", "L", "G", "D", "Q", "V", "Z", "N", "T", "O",
-      "W", "Y", "H", "X", "U", "S", "P", "A", "I", "B", "R", "C", "J"
-  ]
-  rotor1 = Rotor.new(right1, nil, "M")
+  rotor3 = Rotor.new("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V", "K")
+  rotor2 = Rotor.new("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E", "C")
+  rotor1 = Rotor.new("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q", "M")
   @rotors = {"1" => rotor1, "2" => rotor2, "3" => rotor3}
+end
+
+Given /^a preset reflector$/ do
+  @reflector = Rotor.new("YRUHQSLDPXNGOKMIEBFZCWVJAT")
 end
 
 Then /^rotor "([^"]*)" should have a notch at "([^"]*)"$/ do |rotor_number, expected_notch|
@@ -29,6 +19,14 @@ Then /^rotor "([^"]*)" should have a notch at "([^"]*)"$/ do |rotor_number, expe
   end
 end
 
-Then /^rotor "([^"]*)" should map "([^"]*)" to "([^"]*)" in "([^"]*)" direction$/ do |rotor_number, input, expected_output, direction|
-  @rotors[rotor_number].map(input.to_i, direction.to_sym).should == expected_output.to_i
+Then /^rotor "([^"]*)" should "([^"]*)" "([^"]*)" to "([^"]*)"$/ do |rotor_number, direction, input, expected_output|
+  if direction == "cipher"
+    @rotors[rotor_number].cipher(input.to_i).should == expected_output.to_i
+  elsif direction == "decipher"
+    @rotors[rotor_number].decipher(input.to_i).should == expected_output.to_i
+  end
+end
+
+Then /^the reflector should map "([^"]*)" to "([^"]*)"$/ do |input, expected_output|
+  @reflector.cipher(input.to_i).should == expected_output.to_i
 end
