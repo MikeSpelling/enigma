@@ -1,4 +1,5 @@
 class Enigma
+
   def initialize(rotor_1, rotor_2, rotor_3, reflector)
     @alphabet  = ("A".."Z").to_a
     @rotor_1   = rotor_1
@@ -31,4 +32,5 @@ class Enigma
       @rotor_1.rotate
     end
   end
+  
 end
