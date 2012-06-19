@@ -10,7 +10,7 @@ Feature: Rotor takes a number as an input and maps it to another
   Scenario: It should map forwards
     Then rotor "3" should "cipher" "0" to "13"
 
-  Scenario: It maps backwards
+  Scenario: It should map backwards
     Then rotor "1" should "decipher" "25" to "18"
     
   Scenario: Reflector should map a number

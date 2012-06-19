@@ -21,16 +21,17 @@ class Enigma
 
   private
   def rotate
-    if @rotor_3.offset == @rotor_3.notch
-      @rotor_2.rotate
-    end
-    
-    @rotor_3.rotate
-    
+    if @rotor_1.offset == @rotor_1.notch
+          @rotor_2.rotate
+          @rotor_3.rotate
+        end
     if @rotor_2.offset == @rotor_2.notch
-      @rotor_2.rotate
       @rotor_1.rotate
     end
+    if @rotor_3.offset == @rotor_3.notch
+      @rotor_2.rotate
+    end    
+    @rotor_3.rotate    
   end
   
 end
