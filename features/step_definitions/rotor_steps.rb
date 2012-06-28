@@ -21,12 +21,12 @@ end
 
 Then /^rotor "([^"]*)" should "([^"]*)" "([^"]*)" to "([^"]*)"$/ do |rotor_number, direction, input, expected_output|
   if direction == "cipher"
-    assert_equal @rotors[rotor_number].cipher(input.to_i), expected_output.to_i
+    assert_equal @rotors[rotor_number].cipher(input), expected_output
   elsif direction == "decipher"
-    assert_equal @rotors[rotor_number].decipher(input.to_i), expected_output.to_i
+    assert_equal @rotors[rotor_number].decipher(input), expected_output
   end
 end
 
 Then /^the reflector should map "([^"]*)" to "([^"]*)"$/ do |input, expected_output|
-  assert_equal @reflector.cipher(input.to_i), expected_output.to_i
+  assert_equal @reflector.cipher(input), expected_output
 end

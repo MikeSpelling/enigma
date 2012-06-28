@@ -11,11 +11,9 @@ class Enigma
   def cipher(text)
     text.split("").map do |character|
       rotate
-      as_number = @alphabet.index(character)
-      forwards  = @rotor_1.cipher(@rotor_2.cipher(@rotor_3.cipher(as_number)))
+      forwards  = @rotor_1.cipher(@rotor_2.cipher(@rotor_3.cipher(character)))
       reflected = @reflector.cipher(forwards)
       backwards = @rotor_3.decipher(@rotor_2.decipher(@rotor_1.decipher(reflected)))
-      as_char   = @alphabet.to_a[backwards]
     end.join("")
   end
 

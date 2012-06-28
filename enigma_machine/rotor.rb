@@ -8,14 +8,18 @@ class Rotor
     @offset   = @alphabet.index(offset)
   end
 
-  def cipher(number)
+  def cipher(character)
+    number = @alphabet.index(character)
     index = (number + @offset) % @ciphabet.length
-    (@alphabet.index(@ciphabet[index]) - @offset) % @ciphabet.length
+    output_number = (@alphabet.index(@ciphabet[index]) - @offset) % @ciphabet.length
+    @alphabet[output_number]
   end
 
-  def decipher(number)
+  def decipher(character)
+    number = @alphabet.index(character)
     index = (number + @offset) % @alphabet.length
-    (@ciphabet.index(@alphabet[index]) - @offset) % @alphabet.length
+    output_number = (@ciphabet.index(@alphabet[index]) - @offset) % @alphabet.length
+    @alphabet[output_number]
   end
 
   def rotate(times = 1)

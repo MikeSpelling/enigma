@@ -8,12 +8,12 @@ Feature: Rotor takes a number as an input and maps it to another
     And rotor "2" should have a notch at "4"
 
   Scenario: It should map forwards
-    Then rotor "3" should "cipher" "0" to "13"
+    Then rotor "3" should "cipher" "A" to "N"
 
   Scenario: It should map backwards
-    Then rotor "1" should "decipher" "25" to "18"
+    Then rotor "1" should "decipher" "Z" to "S"
     
   Scenario: Reflector should map a number
     Given a preset reflector
-    Then the reflector should map "0" to "24"
+    Then the reflector should map "A" to "Y"
     
