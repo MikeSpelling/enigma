@@ -1,13 +1,24 @@
 class Enigma
 
-  def initialize(rotors, reflector)
+  def initialize(rotor_numbers, reflector_number)
     @alphabet  = ("A".."Z").to_a
-    @rotors = rotors
-    @reflector = reflector
+    rotor1 = Rotor.new("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q", "M")
+    rotor2 = Rotor.new("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E", "C")
+    rotor3 = Rotor.new("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V", "K")
+    all_rotors = [rotor1, rotor2, rotor3]
+    
+    reflector1 = Rotor.new("YRUHQSLDPXNGOKMIEBFZCWVJAT")
+    all_reflectors = [reflector1]
+    
+    @rotors = []
+    rotor_numbers.each do |index|
+      @rotors << all_rotors[index-1]
+    end
+    @reflector = all_reflectors[reflector_number-1]
   end
 
   def cipher(text)
-    text.split("").map do |character|
+    text.upcase.split("").map do |character|
       rotate
       @rotors.reverse.each do |rotor|
         character = rotor.cipher(character)

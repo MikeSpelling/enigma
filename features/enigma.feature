@@ -1,9 +1,7 @@
 Feature: Enigma takes a string and maps it to ciphered text
 
   Background: Set up rotors
-    Given there are 3 preset rotors
-    And a preset reflector
-    And an enigma
+    Given an enigma with rotors "1, 2, 3" and reflector "1"
 
   Scenario: It should cipher a character
     Then enigma should encode "E" as "Q"
@@ -15,5 +13,5 @@ Feature: Enigma takes a string and maps it to ciphered text
     Then enigma should encode "QMJIDOMZWZJFJR" as "ENIGMAREVEALED"
     
   Scenario: It should be symmetric
-    Then enigma should encode "ENIGMAREVEALED" as "QMJIDOMZWZJFJR"
+    Then enigma should encode "abcdefeghijklmnopqrstuvwxyz" symettrically
     
