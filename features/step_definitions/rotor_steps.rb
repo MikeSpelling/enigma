@@ -2,7 +2,7 @@ Given /^there are 3 preset rotors$/ do
   rotor3 = Rotor.new("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V", "K")
   rotor2 = Rotor.new("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E", "C")
   rotor1 = Rotor.new("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q", "M")
-  @rotors = [rotor1,  rotor2, rotor3]
+  @rotors = [rotor1, rotor2, rotor3]
 end
 
 Given /^a preset reflector$/ do
