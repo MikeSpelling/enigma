@@ -1,7 +1,6 @@
 class Enigma
 
-  def initialize(rotor_numbers = [1], offsets = "A", reflector_number = 1, plugboard = nil)
-      
+  def initialize(rotor_numbers = [1], offsets = "A", reflector_number = 1, plugboard = nil)      
     @default_plugboard = {"A"=>"A", "B"=>"B", "C"=>"C", "D"=>"D", "E"=>"E", "F"=>"F", "G"=>"G", "H"=>"H", "I"=>"I", "J"=>"J", "K"=>"K", "L"=>"L", 
       "M"=>"M", "N"=>"N", "O"=>"O", "P"=>"P", "Q"=>"Q", "R"=>"R", "S"=>"S", "T"=>"T", "U"=>"U", "V"=>"V", "W"=>"W", "X"=>"X", "Y"=>"Y", "Z"=>"Z"}
     
@@ -19,7 +18,6 @@ class Enigma
     reflector5 = Rotor.new("ZAQCDEXSWVFRBGTMJUNHYKIPLO")
     @all_reflectors = [reflector1, reflector2, reflector3, reflector4, reflector5]
     
-    @offsets = offsets
     @reflector = @all_reflectors[reflector_number-1]
     set_rotors(rotor_numbers, offsets)    
     set_plugboard(plugboard)   
@@ -54,7 +52,7 @@ class Enigma
     @reflector = @all_reflectors[reflector_number-1]
   end
   
-  def set_plugboard(settings)
+  def set_plugboard(settings) # Settings in format A-B,C-D to swap A with B and C with D
     plugboard = @default_plugboard
     unless settings.nil?    
       settings.split(",").each do |pair|
@@ -75,8 +73,7 @@ class Enigma
   private
   def rotate
     @rotors.size.times do |count|
-      # First rotor rotates all if at notch
-      if count == 0  and @rotors[0].offset == @rotors[0].notch
+      if count == 0  and @rotors[0].offset == @rotors[0].notch # First rotor rotates all if at notch
         @rotors.each do |rotor|
           rotor.rotate
         end  
