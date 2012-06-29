@@ -10,14 +10,8 @@ end
 Then /^enigma should encode "([^"]*)" symettrically$/ do |input|
   output = @enigma.cipher(input.upcase)
   steps "Given an enigma with rotors \"1, 2, 3\" at offsets \"M, C, K\" and reflector \"1\""
-  steps "And I rearrange the plugboard to a preset"
+  steps "Given I set the plugboard to \"A-B,C-F,G-R,M-I,P-O,Z-V,H-S,L-Q\""
   assert_equal input.upcase, @enigma.cipher(output)
-end
-
-Given /^I rearrange the plugboard to a preset$/ do
-  # Random choice of changes
-  @enigma.plugboard = {"A"=>"B", "B"=>"A", "C"=>"Z", "D"=>"S", "E"=>"P", "F"=>"G", "G"=>"F", "H"=>"H", "I"=>"K", "J"=>"M", "K"=>"I", "L"=>"X", "M"=>"J",
-  "N"=>"R", "O"=>"O", "P"=>"E", "Q"=>"Q", "R"=>"N", "S"=>"D", "T"=>"T", "U"=>"Y", "V"=>"V", "W"=>"W", "X"=>"L", "Y"=>"U", "Z"=>"C"}
 end
 
 Given /^I set the plugboard to "([^"]*)"$/ do |settings|

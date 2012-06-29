@@ -13,7 +13,7 @@ Feature: Enigma takes a string and maps it to ciphered text
     Then enigma should encode "QMJIDOMZWZJFJR" as "ENIGMAREVEALED"
     
   Scenario: It should be symmetric
-    Given I rearrange the plugboard to a preset
+    Given I set the plugboard to "A-B,C-F,G-R,M-I,P-O,Z-V,H-S,L-Q"
     Then enigma should encode "abcdefeghijklmnopqrstuvwxyz" symettrically
     
   Scenario: Encode something
