@@ -1,35 +1,39 @@
 class Enigma
 
-  def initialize(rotor_1, rotor_2, rotor_3, reflector)
+  def initialize(rotors, reflector)
     @alphabet  = ("A".."Z").to_a
-    @rotor_1   = rotor_1
-    @rotor_2   = rotor_2
-    @rotor_3   = rotor_3
+    @rotors = rotors
     @reflector = reflector
   end
 
   def cipher(text)
     text.split("").map do |character|
       rotate
-      forwards  = @rotor_1.cipher(@rotor_2.cipher(@rotor_3.cipher(character)))
-      reflected = @reflector.cipher(forwards)
-      backwards = @rotor_3.decipher(@rotor_2.decipher(@rotor_1.decipher(reflected)))
+      @rotors.reverse.each do |rotor|
+        character = rotor.cipher(character)
+      end
+      character = @reflector.cipher(character)
+      @rotors.each do |rotor|
+        character = rotor.decipher(character)
+      end
+      character
     end.join("")
   end
 
   private
   def rotate
-    if @rotor_1.offset == @rotor_1.notch
-          @rotor_2.rotate
-          @rotor_3.rotate
-        end
-    if @rotor_2.offset == @rotor_2.notch
-      @rotor_1.rotate
-    end
-    if @rotor_3.offset == @rotor_3.notch
-      @rotor_2.rotate
-    end    
-    @rotor_3.rotate    
+    @rotors.size.times do |count|
+      # First rotor rotates all if at notch
+      if count == 0  and @rotors[0].offset == @rotors[0].notch
+        @rotors.each do |rotor|
+          rotor.rotate
+        end  
+        
+      else
+        @rotors[count-1].rotate if @rotors[count].offset == @rotors[count].notch
+        @rotors[count].rotate if count == @rotors.size-1 # Last rotor always rotates
+      end
+    end  
   end
   
 end
