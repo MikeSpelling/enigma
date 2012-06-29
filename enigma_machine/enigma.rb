@@ -2,7 +2,7 @@ class Enigma
   
   attr_writer :plugboard
 
-  def initialize(rotor_numbers = [1], offsets = "A", reflector_number = [1], plugboard = nil)
+  def initialize(rotor_numbers = [1], offsets = "A", reflector_number = 1, plugboard = nil)
       
     @default_plugboard = {"A"=>"A", "B"=>"B", "C"=>"C", "D"=>"D", "E"=>"E", "F"=>"F", "G"=>"G", "H"=>"H", "I"=>"I", "J"=>"J", "K"=>"K", "L"=>"L", 
       "M"=>"M", "N"=>"N", "O"=>"O", "P"=>"P", "Q"=>"Q", "R"=>"R", "S"=>"S", "T"=>"T", "U"=>"U", "V"=>"V", "W"=>"W", "X"=>"X", "Y"=>"Y", "Z"=>"Z"}
@@ -22,16 +22,9 @@ class Enigma
     @all_reflectors = [reflector1, reflector2, reflector3, reflector4, reflector5]
     
     @offsets = offsets
-    @rotors = []
-    rotor_numbers.each do |index|
-      rotor = @all_rotors[index-1]
-      rotor.set_offset offsets[index-1]
-      @rotors << rotor
-    end
-    
     @reflector = @all_reflectors[reflector_number-1]
-    
-    @plugboard = set_plugboard(plugboard)   
+    set_rotors(rotor_numbers, offsets)    
+    set_plugboard(plugboard)   
   end
 
   def cipher(text)
@@ -50,10 +43,11 @@ class Enigma
   end
   
   def set_rotors(rotor_numbers, offsets)
+    @offsets = offsets
     @rotors = []
-    rotor_numbers.each do |index|
-      rotor = @all_rotors[index-1]
-      rotor.set_offset offsets[index-1]
+    rotor_numbers.each_with_index do |rotor_number, index|
+      rotor = @all_rotors[rotor_number-1]
+      rotor.set_offset offsets[index]
       @rotors << rotor
     end
   end
