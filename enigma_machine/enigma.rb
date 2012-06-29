@@ -2,34 +2,36 @@ class Enigma
   
   attr_writer :plugboard
 
-  def initialize(rotor_numbers, offsets, reflector_number, 
-    plugboard = {"A"=>"A", "B"=>"B", "C"=>"C", "D"=>"D", "E"=>"E", "F"=>"F", "G"=>"G", "H"=>"H", "I"=>"I", "J"=>"J", "K"=>"K", "L"=>"L", "M"=>"M",
-      "N"=>"N", "O"=>"O", "P"=>"P", "Q"=>"Q", "R"=>"R", "S"=>"S", "T"=>"T", "U"=>"U", "V"=>"V", "W"=>"W", "X"=>"X", "Y"=>"Y", "Z"=>"Z"})
+  def initialize(rotor_numbers = [1], offsets = "A", reflector_number = [1], plugboard = nil)
+      
+    @default_plugboard = {"A"=>"A", "B"=>"B", "C"=>"C", "D"=>"D", "E"=>"E", "F"=>"F", "G"=>"G", "H"=>"H", "I"=>"I", "J"=>"J", "K"=>"K", "L"=>"L", 
+      "M"=>"M", "N"=>"N", "O"=>"O", "P"=>"P", "Q"=>"Q", "R"=>"R", "S"=>"S", "T"=>"T", "U"=>"U", "V"=>"V", "W"=>"W", "X"=>"X", "Y"=>"Y", "Z"=>"Z"}
     
     rotor1 = Rotor.new("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q")
     rotor2 = Rotor.new("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E")
     rotor3 = Rotor.new("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V")
     rotor4 = Rotor.new("QAZWSXEDCRFVTGBYHNUJMIKOLP", "A")
     rotor5 = Rotor.new("POIUYTREWQLKJHGFDSAMNBVCXZ", "Y")
-    all_rotors = [rotor1, rotor2, rotor3, rotor4, rotor5]
+    @all_rotors = [rotor1, rotor2, rotor3, rotor4, rotor5]
     
     reflector1 = Rotor.new("YRUHQSLDPXNGOKMIEBFZCWVJAT")
     reflector2 = Rotor.new("PLOKMIJNUHBYGVTFCRDXESZWAQ")
     reflector3 = Rotor.new("LKJHGFDSAMNBVCXZPOIUYTREWQ")
     reflector4 = Rotor.new("QWERTYUIOPASDFGHJKLZXCVBNM")
     reflector5 = Rotor.new("ZAQCDEXSWVFRBGTMJUNHYKIPLO")
-    all_reflectors = [reflector1, reflector2, reflector3, reflector4, reflector5]
+    @all_reflectors = [reflector1, reflector2, reflector3, reflector4, reflector5]
     
+    @offsets = offsets
     @rotors = []
     rotor_numbers.each do |index|
-      rotor = all_rotors[index-1]
+      rotor = @all_rotors[index-1]
       rotor.set_offset offsets[index-1]
       @rotors << rotor
     end
     
-    @reflector = all_reflectors[reflector_number-1]
+    @reflector = @all_reflectors[reflector_number-1]
     
-    @plugboard = plugboard
+    @plugboard = set_plugboard(plugboard)   
   end
 
   def cipher(text)
@@ -45,6 +47,37 @@ class Enigma
       end
       @plugboard[character]
     end.join("")
+  end
+  
+  def set_rotors(rotor_numbers, offsets)
+    @rotors = []
+    rotor_numbers.each do |index|
+      rotor = @all_rotors[index-1]
+      rotor.set_offset offsets[index-1]
+      @rotors << rotor
+    end
+  end
+  
+  def set_reflector(reflector_number)
+    @reflector = @all_reflectors[reflector_number-1]
+  end
+  
+  def set_plugboard(settings)
+    plugboard = @default_plugboard
+    unless settings.nil?    
+      settings.split(",").each do |pair|
+        chars = pair.split("-")
+        plugboard[chars[0].upcase] = chars[1].upcase
+        plugboard[chars[1].upcase] = chars[0].upcase
+      end
+    end
+    @plugboard = plugboard
+  end
+  
+  def reset
+    @rotors.each_with_index do |rotor, index|
+      rotor.set_offset @offsets[index]
+    end
   end
 
   private
