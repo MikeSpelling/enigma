@@ -2,6 +2,9 @@ class Enigma
 
   def initialize(rotor_numbers, reflector_number)
     @alphabet  = ("A".."Z").to_a
+    # Add more rotors and reflectors
+    # Add choice of notch for each rotor
+    # Add plugboard?
     rotor1 = Rotor.new("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q", "M")
     rotor2 = Rotor.new("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E", "C")
     rotor3 = Rotor.new("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V", "K")
