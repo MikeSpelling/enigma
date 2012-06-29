@@ -1,6 +1,4 @@
 class Enigma
-  
-  attr_writer :plugboard
 
   def initialize(rotor_numbers = [1], offsets = "A", reflector_number = 1, plugboard = nil)
       
