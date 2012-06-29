@@ -1,5 +1,5 @@
 class Rotor
-  attr_accessor :offset, :notch
+  attr_reader :offset, :notch
 
   def initialize(ciphabet, notch = nil, offset = "A")
     @alphabet = ("A".."Z").to_a
@@ -24,5 +24,9 @@ class Rotor
 
   def rotate(times = 1)
     @offset += times
+  end
+  
+  def set_offset(character)
+    @offset = @alphabet.index(character)
   end
 end

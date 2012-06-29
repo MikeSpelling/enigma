@@ -1,28 +1,42 @@
 class Enigma
+  
+  attr_writer :plugboard
 
-  def initialize(rotor_numbers, reflector_number)
-    @alphabet  = ("A".."Z").to_a
-    # Add more rotors and reflectors
-    # Add choice of notch for each rotor
-    # Add plugboard?
-    rotor1 = Rotor.new("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q", "M")
-    rotor2 = Rotor.new("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E", "C")
-    rotor3 = Rotor.new("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V", "K")
-    all_rotors = [rotor1, rotor2, rotor3]
+  def initialize(rotor_numbers, offsets, reflector_number, 
+    plugboard = {"A"=>"A", "B"=>"B", "C"=>"C", "D"=>"D", "E"=>"E", "F"=>"F", "G"=>"G", "H"=>"H", "I"=>"I", "J"=>"J", "K"=>"K", "L"=>"L", "M"=>"M",
+      "N"=>"N", "O"=>"O", "P"=>"P", "Q"=>"Q", "R"=>"R", "S"=>"S", "T"=>"T", "U"=>"U", "V"=>"V", "W"=>"W", "X"=>"X", "Y"=>"Y", "Z"=>"Z"})
+    
+      @alphabet  = ("A".."Z").to_a
+    rotor1 = Rotor.new("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q")
+    rotor2 = Rotor.new("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E")
+    rotor3 = Rotor.new("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V")
+    rotor4 = Rotor.new("QAZWSXEDCRFVTGBYHNUJMIKOLP", "A")
+    rotor5 = Rotor.new("POIUYTREWQLKJHGFDSAMNBVCXZ", "Y")
+    all_rotors = [rotor1, rotor2, rotor3, rotor4, rotor5]
     
     reflector1 = Rotor.new("YRUHQSLDPXNGOKMIEBFZCWVJAT")
-    all_reflectors = [reflector1]
+    reflector2 = Rotor.new("PLOKMIJNUHBYGVTFCRDXESZWAQ")
+    reflector3 = Rotor.new("LKJHGFDSAMNBVCXZPOIUYTREWQ")
+    reflector4 = Rotor.new("QWERTYUIOPASDFGHJKLZXCVBNM")
+    reflector5 = Rotor.new("ZAQCDEXSWVFRBGTMJUNHYKIPLO")
+    all_reflectors = [reflector1, reflector2, reflector3, reflector4, reflector5]
     
     @rotors = []
     rotor_numbers.each do |index|
-      @rotors << all_rotors[index-1]
+      rotor = all_rotors[index-1]
+      rotor.set_offset offsets[index-1]
+      @rotors << rotor
     end
+    
     @reflector = all_reflectors[reflector_number-1]
+    
+    @plugboard = plugboard
   end
 
   def cipher(text)
     text.upcase.split("").map do |character|
       rotate
+      character = @plugboard[character]
       @rotors.reverse.each do |rotor|
         character = rotor.cipher(character)
       end
@@ -30,7 +44,7 @@ class Enigma
       @rotors.each do |rotor|
         character = rotor.decipher(character)
       end
-      character
+      @plugboard[character]
     end.join("")
   end
 
