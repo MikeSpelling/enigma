@@ -24,7 +24,7 @@ Given /^I set the plugboard to "([^"]*)"$/ do |settings|
   plugboard = {"A"=>"A", "B"=>"B", "C"=>"C", "D"=>"D", "E"=>"E", "F"=>"F", "G"=>"G", "H"=>"H", "I"=>"I", "J"=>"J", "K"=>"K", "L"=>"L", "M"=>"M",
     "N"=>"N", "O"=>"O", "P"=>"P", "Q"=>"Q", "R"=>"R", "S"=>"S", "T"=>"T", "U"=>"U", "V"=>"V", "W"=>"W", "X"=>"X", "Y"=>"Y", "Z"=>"Z"}
     
-  settings.split(":").each do |pair|
+  settings.split(",").each do |pair|
     chars = pair.split("-")
     plugboard[chars[0].upcase] = chars[1].upcase
     plugboard[chars[1].upcase] = chars[0].upcase

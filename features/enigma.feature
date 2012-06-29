@@ -18,5 +18,5 @@ Feature: Enigma takes a string and maps it to ciphered text
     
   Scenario: Encode something
     Given an enigma with rotors "4, 1, 5, 3, 2" at offsets "A, L, R, D, Z" and reflector "3"
-    And I set the plugboard to "A-X:C-D:G-R:M-I:P-O:Z-V:H-S:B-Q"
+    And I set the plugboard to "A-X,C-D,G-R,M-I,P-O,Z-V,H-S,B-Q"
     Then I encode "HELLOWORLD"
