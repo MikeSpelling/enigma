@@ -26,8 +26,8 @@ Given /^I set the plugboard to "([^"]*)"$/ do |settings|
     
   settings.split(":").each do |pair|
     chars = pair.split("-")
-    plugboard[chars[0]] = chars[1]
-    plugboard[chars[1]] = chars[0]
+    plugboard[chars[0].upcase] = chars[1].upcase
+    plugboard[chars[1].upcase] = chars[0].upcase
   end
   @enigma.plugboard = plugboard
 end
