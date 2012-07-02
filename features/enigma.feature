@@ -15,6 +15,11 @@ Feature: Enigma takes a string and maps it to ciphered text
   Scenario: It should be symmetric
     Given I set the plugboard to "A-B,C-F,G-R,M-I,P-O,Z-V,H-S,L-Q"
     Then enigma should encode "abcdefeghijklmnopqrstuvwxyz" symmetrically
+    
+  Scenario: More complicated enigma
+    Given an enigma with rotors "3, 2, 5, 4, 1" at offsets "Y, S, Z, A, J" and reflector "4"
+    And I set the plugboard to "G-A,Z-F,Q-X,J-K"
+    Then enigma should encode "ALONGSENTANCE" symmetrically
 
   Scenario: Encode something
     Given an enigma with rotors "4, 1, 5, 3, 2" at offsets "A, L, R, D, Z" and reflector "3"
