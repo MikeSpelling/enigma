@@ -1,6 +1,6 @@
 class Enigma
 
-  def initialize(rotor_numbers = [1], offsets = "A", reflector_number = 1, plugboard = nil)
+  def initialize(rotor_numbers = [1], offsets = "A", reflector_number = 1, plugboard = "")
     @default_plugboard = {"A"=>"A", "B"=>"B", "C"=>"C", "D"=>"D", "E"=>"E", "F"=>"F", "G"=>"G", "H"=>"H", "I"=>"I", "J"=>"J", "K"=>"K", "L"=>"L", "M"=>"M",
                           "N"=>"N", "O"=>"O", "P"=>"P", "Q"=>"Q", "R"=>"R", "S"=>"S", "T"=>"T", "U"=>"U", "V"=>"V", "W"=>"W", "X"=>"X", "Y"=>"Y", "Z"=>"Z"}
 
@@ -54,12 +54,10 @@ class Enigma
 
   def set_plugboard(settings) # Settings in format A-B,C-D to swap A with B and C with D
     plugboard = @default_plugboard
-    unless settings.nil?
-      settings.split(",").each do |pair|
-        chars = pair.split("-")
-        plugboard[chars[0].upcase] = chars[1].upcase
-        plugboard[chars[1].upcase] = chars[0].upcase
-      end
+    settings.split(",").each do |pair|
+      chars = pair.split("-")
+      plugboard[chars[0].upcase] = chars[1].upcase
+      plugboard[chars[1].upcase] = chars[0].upcase
     end
     @plugboard = plugboard
   end
