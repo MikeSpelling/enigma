@@ -1,6 +1,6 @@
 Given /^an enigma with rotors "([^"]*)" at offsets "([^"]*)" and reflector "([^"]*)"$/ do |rotor_choices, offsets, reflector|
-  rotor_numbers = rotor_choices.split(", ").map { |rotor_string| rotor_string.to_i }
-  @enigma = Enigma.new(rotor_numbers, offsets.split(", "), reflector.to_i)
+  rotor_numbers = rotor_choices.split(",").map { |rotor_string| rotor_string.to_i }
+  @enigma = Enigma.new(rotor_numbers, offsets.split(","), reflector.to_i)
 end
 
 Then /^enigma should encode "([^"]*)" as "([^"]*)"$/ do |input, expected_output|
