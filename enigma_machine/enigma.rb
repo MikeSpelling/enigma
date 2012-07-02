@@ -1,9 +1,6 @@
 class Enigma
 
   def initialize(rotor_numbers = [1], offsets = "A", reflector_number = 1, plugboard = "")
-    @default_plugboard = {"A"=>"A", "B"=>"B", "C"=>"C", "D"=>"D", "E"=>"E", "F"=>"F", "G"=>"G", "H"=>"H", "I"=>"I", "J"=>"J", "K"=>"K", "L"=>"L", "M"=>"M",
-                          "N"=>"N", "O"=>"O", "P"=>"P", "Q"=>"Q", "R"=>"R", "S"=>"S", "T"=>"T", "U"=>"U", "V"=>"V", "W"=>"W", "X"=>"X", "Y"=>"Y", "Z"=>"Z"}
-
     rotor1 = Rotor.new("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q")
     rotor2 = Rotor.new("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E")
     rotor3 = Rotor.new("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V")
@@ -28,11 +25,7 @@ class Enigma
 
   def cipher(text)
     text.upcase.split("").map do |character|
-      if ("A".."Z").include? character
-        encode(character)
-      else
-        character
-      end
+      ("A".."Z").include?(character) ? encode(character) : character
     end.join("")
   end
 
@@ -51,13 +44,14 @@ class Enigma
   end
 
   def set_plugboard(settings) # Settings in format A-B,C-D to swap A with B and C with D
-    plugboard = @default_plugboard
+    @plugboard = {"A"=>"A", "B"=>"B", "C"=>"C", "D"=>"D", "E"=>"E", "F"=>"F", "G"=>"G", "H"=>"H", "I"=>"I", "J"=>"J", "K"=>"K", "L"=>"L", "M"=>"M",
+    "N"=>"N", "O"=>"O", "P"=>"P", "Q"=>"Q", "R"=>"R", "S"=>"S", "T"=>"T", "U"=>"U", "V"=>"V", "W"=>"W", "X"=>"X", "Y"=>"Y", "Z"=>"Z"}
+    
     settings.split(",").each do |pair|
       chars = pair.split("-")
-      plugboard[chars[0].upcase] = chars[1].upcase
-      plugboard[chars[1].upcase] = chars[0].upcase
+      @plugboard[chars[0].upcase] = chars[1].upcase
+      @plugboard[chars[1].upcase] = chars[0].upcase
     end
-    @plugboard = plugboard
   end
 
   def reset
@@ -83,10 +77,7 @@ class Enigma
   def rotate
     @rotors.size.times do |count|
       if count == 0 and @rotors[0].notches.include? @rotors[0].offset # First rotor rotates all others if at notch
-        @rotors.each_with_index do |rotor, index|
-          rotor.rotate if index != 0
-        end
-
+        @rotors.each{|rotor| rotor.rotate}
       else
         @rotors[count-1].rotate if @rotors[count].notches.include? @rotors[count].offset
         @rotors[count].rotate if count == @rotors.size-1 # Last rotor always rotates
