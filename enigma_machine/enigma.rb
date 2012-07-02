@@ -7,15 +7,18 @@ class Enigma
     rotor1 = Rotor.new("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q")
     rotor2 = Rotor.new("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E")
     rotor3 = Rotor.new("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V")
-    rotor4 = Rotor.new("QAZWSXEDCRFVTGBYHNUJMIKOLP", "A")
-    rotor5 = Rotor.new("POIUYTREWQLKJHGFDSAMNBVCXZ", "Y")
-    @all_rotors = [rotor1, rotor2, rotor3, rotor4, rotor5]
+    rotor4 = Rotor.new("ESOVPZJAYQUIRHXLNFTGKDCMWB", "J")
+    rotor5 = Rotor.new("VZBRGITYUPSDNHLXAWMJQOFECK", "Z")
+    rotor6 = Rotor.new("JPGVOUMFYQBENHZRDKASXLICTW", "Z")
+    rotor7 = Rotor.new("NZJHGRCXMYSWBOUFAIVLPEKQDT", "Z")
+    rotor8 = Rotor.new("FKQHTLXOCBJSPDZRAMEWNIUYGV", "Z")
+    @all_rotors = [rotor1, rotor2, rotor3, rotor4, rotor5, rotor6, rotor7, rotor8]
 
     reflector1 = Rotor.new("YRUHQSLDPXNGOKMIEBFZCWVJAT")
-    reflector2 = Rotor.new("PLOKMIJNUHBYGVTFCRDXESZWAQ")
-    reflector3 = Rotor.new("LKJHGFDSAMNBVCXZPOIUYTREWQ")
-    reflector4 = Rotor.new("QWERTYUIOPASDFGHJKLZXCVBNM")
-    reflector5 = Rotor.new("ZAQCDEXSWVFRBGTMJUNHYKIPLO")
+    reflector2 = Rotor.new("EJMZALYXVBWFCRQUONTSPIKHGD")
+    reflector3 = Rotor.new("FVPJIAOYEDRZXWGCTKUQSBNMHL")
+    reflector4 = Rotor.new("ENKQAUYWJICOPBLMDXZVFTHRGS")
+    reflector5 = Rotor.new("RDOBJNTKVEHMLFCWZAXGYIPSUQ")
     @all_reflectors = [reflector1, reflector2, reflector3, reflector4, reflector5]
 
     @reflector = @all_reflectors[reflector_number-1]
@@ -25,16 +28,20 @@ class Enigma
 
   def cipher(text)
     text.upcase.split("").map do |character|
-      rotate
-      character = @plugboard[character]
-      @rotors.reverse.each do |rotor|
-        character = rotor.cipher(character)
+      if ("A".."Z").include? character
+        rotate
+        character = @plugboard[character]
+        @rotors.reverse.each do |rotor|
+          character = rotor.cipher(character)
+        end
+        character = @reflector.cipher(character)
+        @rotors.each do |rotor|
+          character = rotor.decipher(character)
+        end
+        @plugboard[character]
+      else
+        character
       end
-      character = @reflector.cipher(character)
-      @rotors.each do |rotor|
-        character = rotor.decipher(character)
-      end
-      @plugboard[character]
     end.join("")
   end
 

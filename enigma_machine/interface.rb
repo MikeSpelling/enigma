@@ -2,7 +2,7 @@
 require './enigma_machine/enigma'
 require './enigma_machine/rotor'
 
-puts "Enter comma seperated rotor positions (Up to 5 from rotors 1 to 5)"
+puts "Enter comma seperated rotor positions (1 to 8)"
 rotors = gets.chomp.split(",").map{|str|str.to_i}
 
 puts "Enter comma seperated offset positions for each rotor, in the same order"
