@@ -16,7 +16,7 @@ plugboard = gets.chomp
 
 enigma = Enigma.new(rotors, offsets, reflector, plugboard)
 
-puts "Enter string to encrypt"
+puts "Enter string to cipher"
 input = gets.chomp
 
 puts enigma.cipher(input)

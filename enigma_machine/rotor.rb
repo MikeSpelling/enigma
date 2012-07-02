@@ -1,12 +1,15 @@
 class Rotor
 
-  attr_reader :offset, :notch
+  attr_reader :offset, :notches
 
-  def initialize(ciphabet, notch = nil, offset = "A")
+  def initialize(ciphabet, notches = "", offset = "A")
     @alphabet = ("A".."Z").to_a
     @ciphabet = ciphabet.split ""
-    @notch = @alphabet.index(notch)
     @offset = @alphabet.index(offset)
+    
+    notches.split(",").each do |notch|
+      @notches.nil? ? @notches=[@alphabet.index(notch)] : @notches<<@alphabet.index(notch)
+    end
   end
 
   def cipher(character)

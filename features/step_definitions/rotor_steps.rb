@@ -10,12 +10,12 @@ Given /^a preset reflector$/ do
 end
 
 Then /^rotor "([^"]*)" should have a notch at "([^"]*)"$/ do |rotor_number, expected_notch|
-  actual = @rotors[rotor_number.to_i-1].notch
+  actual = @rotors[rotor_number.to_i-1].notches
 
   if expected_notch == "nil"
     assert_equal actual, nil
   else
-    assert_equal expected_notch, actual.to_s
+    assert_equal [expected_notch.to_i], actual
   end
 end
 

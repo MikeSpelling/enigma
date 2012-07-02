@@ -9,9 +9,9 @@ class Enigma
     rotor3 = Rotor.new("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V")
     rotor4 = Rotor.new("ESOVPZJAYQUIRHXLNFTGKDCMWB", "J")
     rotor5 = Rotor.new("VZBRGITYUPSDNHLXAWMJQOFECK", "Z")
-    rotor6 = Rotor.new("JPGVOUMFYQBENHZRDKASXLICTW", "Z")
-    rotor7 = Rotor.new("NZJHGRCXMYSWBOUFAIVLPEKQDT", "Z")
-    rotor8 = Rotor.new("FKQHTLXOCBJSPDZRAMEWNIUYGV", "Z")
+    rotor6 = Rotor.new("JPGVOUMFYQBENHZRDKASXLICTW", "Z,M")
+    rotor7 = Rotor.new("NZJHGRCXMYSWBOUFAIVLPEKQDT", "Z,M")
+    rotor8 = Rotor.new("FKQHTLXOCBJSPDZRAMEWNIUYGV", "Z,M")
     @all_rotors = [rotor1, rotor2, rotor3, rotor4, rotor5, rotor6, rotor7, rotor8]
 
     reflector1 = Rotor.new("YRUHQSLDPXNGOKMIEBFZCWVJAT")
@@ -29,16 +29,7 @@ class Enigma
   def cipher(text)
     text.upcase.split("").map do |character|
       if ("A".."Z").include? character
-        rotate
-        character = @plugboard[character]
-        @rotors.reverse.each do |rotor|
-          character = rotor.cipher(character)
-        end
-        character = @reflector.cipher(character)
-        @rotors.each do |rotor|
-          character = rotor.decipher(character)
-        end
-        @plugboard[character]
+        encode(character)
       else
         character
       end
@@ -47,11 +38,11 @@ class Enigma
 
   def set_rotors(rotor_numbers, offsets)
     @offsets = offsets
-    @rotors = []
+    
     rotor_numbers.each_with_index do |rotor_number, index|
       rotor = @all_rotors[rotor_number-1]
       rotor.set_offset offsets[index]
-      @rotors << rotor
+      @rotors.nil? ? @rotors=[rotor] : @rotors<<rotor
     end
   end
 
@@ -76,18 +67,31 @@ class Enigma
   end
 
   private
+  def encode(character)
+    rotate
+    character = @plugboard[character]
+    @rotors.reverse.each do |rotor|
+      character = rotor.cipher(character)
+    end
+    character = @reflector.cipher(character)
+    @rotors.each do |rotor|
+      character = rotor.decipher(character)
+    end
+    @plugboard[character]
+  end
+  
   def rotate
     @rotors.size.times do |count|
-      if count == 0 and @rotors[0].offset == @rotors[0].notch # First rotor rotates all if at notch
-        @rotors.each do |rotor|
-          rotor.rotate
+      if count == 0 and @rotors[0].notches.include? @rotors[0].offset # First rotor rotates all others if at notch
+        @rotors.each_with_index do |rotor, index|
+          rotor.rotate if index != 0
         end
 
       else
-        @rotors[count-1].rotate if @rotors[count].offset == @rotors[count].notch
+        @rotors[count-1].rotate if @rotors[count].notches.include? @rotors[count].offset
         @rotors[count].rotate if count == @rotors.size-1 # Last rotor always rotates
       end
     end
-  end
+  end  
 
 end

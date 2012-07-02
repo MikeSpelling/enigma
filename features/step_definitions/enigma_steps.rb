@@ -20,3 +20,7 @@ end
 Given /^I encode "([^"]*)"$/ do |input|
   puts @enigma.cipher(input)
 end
+
+And /^reset$/ do
+  @enigma.reset
+end

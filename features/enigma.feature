@@ -30,7 +30,8 @@ Feature: Enigma takes a string and maps it to ciphered text
     Then enigma should encode "abcdefeghijklmnopqrstuvwxyz" symmetrically
 
   Scenario: Encode something complex
-    Given an enigma with rotors "4, 1, 5, 3, 2, 8, 7, 6" at offsets "A, L, R, D, Z, C, E, E" and reflector "3"
+    Given an enigma with rotors "4, 1, 5, 3, 2, 8, 7, 6" at offsets "I, L, R, D, Z, C, E, Y" and reflector "3"
     And I set the plugboard to "A-X,C-D,G-R,M-I,P-O,Z-V,H-S,B-Q"
-    Then enigma should encode "abcdefeghijklmnopqrstuvwxyz" symmetrically
-    And I encode "Hello world!"
+    Then enigma should encode "abcdefeghijklmnopqrstuvwxyzabcdefeghijklmnopqrstuvwxyz" symmetrically
+    When reset
+    Then I encode "Hello world!"
